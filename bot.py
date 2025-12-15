@@ -687,10 +687,10 @@ async def run_bot():
     app.add_handler(CommandHandler("approve", approve_cmd))
     app.add_handler(CommandHandler("reject", reject_cmd))
     
-    async with app:
-        await start_web_server()
-        logger.info("Bot + webhook started")
-        await asyncio.Event().wait()
+async with app:
+    await start_web_server()
+    logger.info("Bot + webhook started")
+    await asyncio.Event().wait()
 
 def main():
     asyncio.run(run_bot())
