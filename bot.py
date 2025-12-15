@@ -686,14 +686,17 @@ async def run_bot():
     app.add_handler(CommandHandler("createpromo", createpromo_cmd))
     app.add_handler(CommandHandler("approve", approve_cmd))
     app.add_handler(CommandHandler("reject", reject_cmd))
-    
-async with app:
-    await start_web_server()
-    logger.info("Bot + webhook started")
-    await asyncio.Event().wait()
+
+    # 🔥 ВАЖНО: async with ВНУТРИ функции
+    async with app:
+        await start_web_server()
+        logger.info("Bot + webhook started")
+        await asyncio.Event().wait()
+
 
 def main():
     asyncio.run(run_bot())
+
 
 if __name__ == "__main__":
     main()
