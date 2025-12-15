@@ -686,19 +686,11 @@ async def run_bot():
     app.add_handler(CommandHandler("createpromo", createpromo_cmd))
     app.add_handler(CommandHandler("approve", approve_cmd))
     app.add_handler(CommandHandler("reject", reject_cmd))
-
-    # запуск в “ручном” режиме, чтобы вместе с aiohttp
-    await app.initialize()
-    await app.start()
-    await app.updater.start_polling(drop_pending_updates=True)
-
-    logger.info("Telegram polling started.")
-
-    # веб-сервер
-    await start_web_server()
-
-    # вечный idle
-    await asyncio.Event().wait()
+    
+    async with app:
+        await start_web_server()
+        logger.info("Bot + webhook started")
+        await asyncio.Event().wait()
 
 def main():
     asyncio.run(run_bot())
