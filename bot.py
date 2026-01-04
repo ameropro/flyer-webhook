@@ -1,4 +1,3 @@
-import asyncio
 import json
 import logging
 import math
@@ -645,7 +644,7 @@ async def check_subscription_job(context: CallbackContext) -> None:
     delete_subscription_watch(watch_id)
 
 
-async def reschedule_watches(application: Application) -> None:
+def reschedule_watches(application: Application) -> None:
     now = int(time.time())
     for watch in list_subscription_watches():
         delay = max(0, watch["due_at"] - now)
@@ -709,13 +708,13 @@ def build_application() -> Application:
     return application
 
 
-async def main() -> None:
+def main() -> None:
     init_db()
     application = build_application()
-    await reschedule_watches(application)
+    reschedule_watches(application)
     logger.info("Bot started")
-    await application.run_polling(allowed_updates=Update.ALL_TYPES)
+    application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
